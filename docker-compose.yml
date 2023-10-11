@@ -1,0 +1,55 @@
+version: '3'
+services:
+  mongo:
+    container_name: openhim-mongo
+    restart: unless-stopped
+    volumes:
+      - "mongo-db:/data/db"
+      - "mongo-config-db:/data/configdb"
+    ports:
+      - "127.0.0.1:27017:27017"
+    image: mongo:3.4
+
+  core:
+    container_name: openhim-core
+    image: jembi/openhim-core:v7.1.0
+    restart: unless-stopped
+    environment:
+      - mongo_url=mongodb://mongo/openhim
+      - mongo_atnaUrl=mongodb://mongo/openhim
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:5000:5000"
+      - "127.0.0.1:5001:5001"
+      - "127.0.0.1:5050:5050"
+        # - "127.0.0.1:5051:5051"
+        # - "127.0.0.1:5052:5052"
+        #- "127.0.0.1:7788:7788"
+    depends_on:
+      - mongo
+
+  console:
+    container_name: openhim-console
+    image: jembi/openhim-console:1.10.0
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9000:80"
+    volumes:
+      - ./default.json:/usr/share/nginx/html/config/default.json
+
+  emr-mpi-mediator:
+    container_name: emr-mpi-mediator
+    ports:
+      - "127.0.0.1:7000:7000"
+    build:
+     ./
+    restart: unless-stopped
+
+volumes:
+  mongo-db:
+  mongo-config-db:
+networks:
+    external:
+      name: openHIM
+    
+      
