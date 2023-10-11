@@ -9,7 +9,7 @@ const cors = require('cors');
 const customContentRangeMiddleware = require('./range');
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: privateConfig.development.adminPortal.url,
   optionsSuccessStatus: 200,
 };
 

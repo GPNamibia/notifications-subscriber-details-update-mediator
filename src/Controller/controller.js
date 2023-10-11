@@ -3,12 +3,11 @@ const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require("uuid");
 const uniqueIdentifier = uuidv4();
-const secretKey = 'fbdkj89898231ebkjjdc8989^gf;^37726nfiur893824';
+const privateConfig = require("../config/private-config.json");
 
 
 function generateRandomToken(length) {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = privateConfig.development.adminPortal.character;
   let token = "";
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
@@ -299,14 +298,14 @@ const listEstablishment = async (req, res) => {
 const authenticate = async (req, res) => {
   try {
     const { username, password } = req.body;
-  if (username === '' && password === '') {
-    const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' }); 
+  if (username === privateConfig.development.adminPortal.username && password === privateConfig.development.adminPortal.password) {
+    const token = jwt.sign({ username }, privateConfig.development.adminPortal.secretKey, { expiresIn: "1h" });
 
     // Return the token as a JSON response
     res.json({ token });
   } else {
     // If authentication fails, return an error response
-    res.status(401).json({ error: 'Authentication failed' });
+    res.status(401).json({ error: "Authentication failed" });
   }
   } catch (error) {
     console.error(error);
