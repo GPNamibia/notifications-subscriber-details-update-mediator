@@ -1,251 +1,57 @@
+Getting Started with Create React App
+This project was bootstrapped with Create React App.
 
-  
+Available Scripts
+In the project directory, you can run:
 
-# emr-mpi Mediator
+npm start
+Runs the app in the development mode.
+Open http://localhost:3000 to view it in your browser.
 
-  
+The page will reload when you make changes.
+You may also see any lint errors in the console.
 
-This mediator is intended for sending request to sante-mpi mediator
+npm test
+Launches the test runner in the interactive watch mode.
+See the section about running tests for more information.
 
-  
+npm run build
+Builds the app for production to the build folder.
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-  
+The build is minified and the filenames include the hashes.
+Your app is ready to be deployed!
 
-# Private Configurations
+See the section about deployment for more information.
 
-  
+npm run eject
+Note: this is a one-way operation. Once you eject, you can't go back!
 
-The `private-config.json` is used to store all the credentials and connection URLs of the mediator. The credentials are currently left out, so the file needs to be renamed with all the required credentials and URLs before installation for the mediator to work.
+If you aren't satisfied with the build tool and configuration choices, you can eject at any time. This command will remove the single build dependency from your project.
 
-  
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except eject will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-  
+You don't have to ever use eject. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-# INISTALL
+Learn More
+You can learn more in the Create React App documentation.
 
-  
+To learn React, check out the React documentation.
 
-  
+Code Splitting
+This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-## Requirements
+Analyzing the Bundle Size
+This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-  
+Making a Progressive Web App
+This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
-  
+Advanced Configuration
+This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
 
-1.  `Node.js 12 or later`
+Deployment
+This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
-  
-
-2.  `npm (version 6 or higher)`
-
-  
-
-3.  `MongoDB`
-
-  
-
-4.  `Docker`
-
-  
-
-5.  `OpenHIM`
-
-  
-
-6.  `Postgress`
-
-  
-
-## Installation in Localhost
-
-  
-
-  
-
-To run the mediator without connecting it to the OpenHIM server, you can use the following commands if you have `Node.js` installed:
-
-  
-
-  
-
-1. Clone or download the repository.`git clone https://github.com/UCSF-GP-Namibia/emr-mpi-endpoint-mediator.git`
-
-  
-
-  
-
-2.  `cd emr-mpi-endpoint-mediator`
-
-  
-
-  
-
-3. Run `npm install` to install the dependencies
-
-  
-
-  
-
-4. Start the development server with `npm start`
-
-  
-
-  
-
-## Installation in Docker
-
-  
-
-  
-
-The mediator can be built and run using the `docker-compose.yml` file configurations.
-
-  
-
-  
-
-1. Clone or download the repository.`git clone https://github.com/UCSF-GP-Namibia/emr-mpi-endpoint-mediator.git`
-
-  
-
-  
-
-2. Navigate to `odk-central-mediator` folder where the `docker-compose.yml` is.
-
-  
-
-  
-
-3.  `docker-compose build`
-
-  
-
-  
-
-4.  `docker-compose up -d`
-
-  
-
-  
-
-5.  `docker network create openHIM`
-
-  
-
-  
-
-## Tests
-
-  
-
-  
-
-You can run the Unit tests using the following command:
-
-  
-
-  
-
-1.  `cd cd emr-mpi-endpoint-mediator`
-
-  
-
-  
-
-2.  `npm run test`
-
-  
-
-  
-
-# HOWTO
-
-  
-
-  
-
-## Usage
-
-  
-
-  
-
-1. Make a `GET` request to `/localhost:7000/patient?freetext=Pete` to perform a free text search for patients on the MPI.
-
-  
-
-2. Make a `GET` request to `/localhost:7000/patient?family=Peter&given=Ken` to perform a search for patients on the MPI where search fields are specified.
-
-  
-
-3. Make a `POST` request to `/localhost:7000/patient` to create a new patient on the MPI.
-
-  
-
-4. Make a `PUT` request to `/localhost:7000/patient/12WENR6` to outlines how an existing patient details will be updated on the MPI.
-
-  
-
-5. Make a `GET` request to `/localhost:7000/Patient/12WENR6` to search for a patient where a Health ID is provided.
-
-  
-
-6. Make a `GET` request to `/localhost:7000/similar/12WENR6` to retrieve patients that the matching algorithm had classified as possible matches. In other words it performs a linked or chained search on a sub-property.
-
-  
-
-7. Make a `POST` request to `/localhost:7000/merge` to link patients that are considered to be duplicates i.e. registered more than once.
-
-  
-
-8. Make a `GET` request to `/localhost:7000/QR/12WENR6` to search for a patient on the MPI. The response will be used to print the QR Code.
-
-  
-
-9. Make a `GET` request to `/localhost:7000/validate/12WENR6` to verify records on the MPI are validated against the NPRS.
-
-  
-
-  
-
-## Authentication
-The API uses a `Beaer Token` for authentication. To access the endpoints, you will need to pass a valid token in the Authorization header of your requests.
-  
-
-  
-
-1. Make a `POST` request to `localhost:7000/auth` endpoint which Generate a token for use when making requests to the MPI
-
- 
-  
-
-## Errors
-
-  
-
-The API uses the following error codes:
-
-  
-
-  
-
-1.  `401` Unauthorized: The request could not be authenticated.
-
-  
-
-2.  `404` Not Found: The requested resource could not be found.
-
-  
-
-3.  `500` Internal Server Error: An error occurred on the server.
-
-  
-
-  
-
-## More information
-
-  
-
-For more information on the API, please contact the developer.
+npm run build fails to minify
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
