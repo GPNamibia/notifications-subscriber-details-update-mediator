@@ -298,7 +298,7 @@ const listEstablishment = async (req, res) => {
 const authenticate = async (req, res) => {
   try {
     const { username, password } = req.body;
-  if (username === privateConfig.development.adminPortal.username && password === privateConfig.development.adminPortal.password) {
+  if (username === privateConfig.development.adminPortal.email && password === privateConfig.development.adminPortal.password) {
     const token = jwt.sign({ username }, privateConfig.development.adminPortal.secretKey, { expiresIn: "1h" });
 
     // Return the token as a JSON response

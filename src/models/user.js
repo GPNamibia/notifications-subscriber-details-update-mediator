@@ -1,13 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
     const user = sequelize.define("user", {
-      firstname: {
+      given_name: {
         type: DataTypes.TEXT,
         allowNull: true,
         validate: {
           notEmpty: true,
         },
       },
-      lastname: {
+      family_name: {
         type: DataTypes.TEXT,
         allowNull: true,
         validate: {
