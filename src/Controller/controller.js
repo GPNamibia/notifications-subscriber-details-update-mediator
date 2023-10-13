@@ -61,26 +61,27 @@ const subscribeUser = async (req, res) => {
 
 const unsubscribeUser = async (req, res) => {
   try {
-    const userId = req.params.id;
-    const selectedForms = req.body.forms; 
+    const { id, token } = req.params;
+    const selectedForms = req.body.forms;
 
-    const unsubscribedUser = await user.findByPk(userId);
+    let unsubscribedUser;
+
+    if (id) {
+      unsubscribedUser = await user.findByPk(id);
+    } else if (token) {
+      unsubscribedUser = await user.findOne({ where: { token } });
+    } else {
+      return res.status(400).json({ error: 'Please provide either an id or token for user identification.' });
+    }
 
     if (unsubscribedUser) {
       const assignedFormsArray = unsubscribedUser.form_assigned_to.split(",");
 
-      // Remove the selected forms from the array
       const updatedFormsArray = assignedFormsArray.filter(
         (form) => !selectedForms.includes(form)
       );
-
-      console.log(updatedFormsArray);
-
-      // Join the updated array back into a comma-separated string
       const updatedFormAssignedTo = updatedFormsArray.join(",");
-      console.log(updatedFormAssignedTo);
 
-      // Update the 'form_assigned_to' column in the user table with the updated string
       unsubscribedUser.form_assigned_to = updatedFormAssignedTo;
 
       await unsubscribedUser.save();
@@ -93,6 +94,7 @@ const unsubscribeUser = async (req, res) => {
     res.status(500).json({ error: "Error unsubscribing user" });
   }
 };
+
 
 
 
@@ -151,20 +153,27 @@ const listUser = async (req, res) => {
 };
 
 
-// Edit a user by ID
 const editUser = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const { id, token } = req.params;
     const userDetail = req.body;
 
     if (Array.isArray(userDetail.form_assigned_to)) {
       userDetail.form_assigned_to = userDetail.form_assigned_to.join(",");
     }
 
-    const existingUser = await user.findOne({ where: { id: userId } });
+    let existingUser;
+
+    if (id) {
+      existingUser = await user.findOne({ where: { id } });
+    } else if (token) {
+      existingUser = await user.findOne({ where: { token } });
+    } else {
+      return res.status(400).json({ error: 'Please provide either an id or token for user identification.' });
+    }
 
     if (!existingUser) {
-      return res.status(404).json({ error: "User does not exist" });
+      return res.status(404).json({ error: 'User does not exist' });
     }
 
     await existingUser.update(userDetail);
@@ -172,27 +181,34 @@ const editUser = async (req, res) => {
     return res.status(200).json(existingUser);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error updating user" });
+    return res.status(500).json({ error: 'Error updating user' });
   }
 };
 
-
-
 const getUser = async (req, res) => {
   try {
-    const user_id = req.params.id;
+    const { id, token } = req.params;
 
-    // Check if a user with the same email already exists
-    const existingUser = await user.findOne({ where: { id: user_id } });
+    // Define a variable to store the user
+    let userToRetrieve;
 
-    if (existingUser) {
-      res.status(200).json(existingUser);
+    if (id) {
+      userToRetrieve = await user.findOne({ where: { id } });
+    } else if (token) {
+       console.log("token")
+      userToRetrieve = await user.findOne({ where: { token } });
     } else {
-      res.status(500).json({ error: 'Patient does not exist' });
+      return res.status(400).json({ error: 'Please provide either an id or token.' });
+    }
+
+    if (userToRetrieve) {
+      res.status(200).json(userToRetrieve);
+    } else {
+      res.status(500).json({ error: 'User does not exist' });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error retriving user' });
+    res.status(500).json({ error: 'Error retrieving user' });
   }
 };
 

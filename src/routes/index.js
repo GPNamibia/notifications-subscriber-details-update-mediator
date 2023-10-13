@@ -4,7 +4,7 @@ const router = require('express').Router()
 // import controller
 const controller = require('../Controller/controller')
 
-router.use(bodyParser.urlencoded({
+router.use(bodyParser.urlencoded({ 
     extended: true
   }));
 
@@ -25,13 +25,17 @@ router.get('/establishments', controller.listEstablishment)
 
 router.put('/user/:id', controller.editUser)
 
+router.put("/user/token/:token", controller.editUser);
+
 router.get('/user/:id', controller.getUser)
 
-router.post('/subscribe/:id', controller.subscribeUser);
+router.get("/user/token/:token", controller.getUser);
 
 router.delete('/user/:id', controller.deleteUser);
 
 router.delete('/unsubscribe/:id', controller.unsubscribeUser);
+
+router.delete("/unsubscribe/token/:token", controller.unsubscribeUser);
 
 
 
